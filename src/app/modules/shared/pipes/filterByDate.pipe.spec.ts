@@ -15,7 +15,7 @@ describe('FilterByDatePipe', () => {
     });
 
   it('should return one news', () => {
-    const newsAux = filterByDatePipe.transform(news, '11-10-2018');
+    const newsAux = filterByDatePipe.transform(news, '11-10-2018 15:00:00');
     expect(newsAux).toEqual([news[2]]);
   });
 
@@ -25,7 +25,7 @@ describe('FilterByDatePipe', () => {
   });
 
   it('should return no news', () => {
-    const newsAux = filterByDatePipe.transform(news, '10-11-2018');
+    const newsAux = filterByDatePipe.transform(news, '10-10-2018 09:00:00');
     expect(newsAux).toEqual([]);
   });
 
