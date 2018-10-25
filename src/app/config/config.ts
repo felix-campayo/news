@@ -1,5 +1,5 @@
 export const CONFIG = {
-    dateFormat: 'DD-MM-YYYY',
+    dateFormat: 'DD-MM-YYYY HH:mm:ss',
     firebaseConfig: {
         apiKey: 'AIzaSyDTy21TjS440VpqbBtG4DG1I0KieWPBtEI',
         authDomain: 'acrimatic.firebaseapp.com',
