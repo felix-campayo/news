@@ -1,0 +1,44 @@
+.header-action {
+    width: 7.5rem;
+}
+
+.header-expansion {
+    width: 2.5rem;
+}
+
+.filter-date {
+    height: 5rem;
+
+    div {
+        span:last-child {
+            width: 100%;
+        }
+
+        input {
+            width: 100%
+        }
+    }
+}
+
+.archive {
+        width: 100%;
+        /deep/ button {
+            width: 100%;
+        }
+}
+
+.no-records {
+    text-align: center;
+}
+
+.caption {
+    text-align: right;
+
+    i {
+        margin: 0.5rem 0.5rem 0 0;
+    }
+
+    input {
+        width: auto;
+    }
+}
