@@ -11,9 +11,10 @@ export class FilterByDatePipe implements PipeTransform {
         let response: News[] = [];
 
         if (newsList && value) {
+            const auxValue = value.trim();
             response = newsList.filter((el: News) => {
                 const aux: string = moment(el.date.toISOString()).format(CONFIG.dateFormat);
-                return aux.includes(value);
+                return aux.includes(auxValue);
             });
         } else if (value === '') {
             response = newsList;
