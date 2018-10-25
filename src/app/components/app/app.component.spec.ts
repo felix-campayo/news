@@ -11,8 +11,8 @@ import { ROUTES } from 'src/app/modules/app-routing.module';
 import { NewsModule } from 'src/app/modules/news/news.module';
 import { NgModuleFactoryLoader, NgZone } from '@angular/core';
 import { NewsService } from 'src/app/modules/news/services';
-import { News } from 'src/app/models';
-import { from, of } from 'rxjs';
+import { of } from 'rxjs';
+import { ArchivesService } from 'src/app/modules/archives/services';
 
 describe('Router: App', () => {
   let location: Location;
@@ -20,13 +20,55 @@ describe('Router: App', () => {
   let fixture;
   let loader: SpyNgModuleFactoryLoader;
 
-  const news: News[] = [
-    new News('1', 'News 1', 'Body News 1', new Date('October 10, 2018 10:00:00'), false),
-    new News('2', 'News 2', 'Body News 2', new Date('October 10, 2018 11:00:00'), false),
-    new News('3', 'News 3', 'Body News 3', new Date('October 11, 2018 15:00:00'), false)
+  const news = [
+    {
+      payload: {
+        doc: {
+          data: () => {
+            return {
+              title: 'News 1',
+              body: 'Body News 1',
+              date: 1541203200,
+              archived: true
+            };
+          },
+          id: '1'
+        }
+      }
+    },
+    {
+      payload: {
+        doc: {
+          data: () => {
+            return {
+              title: 'News 2',
+              body: 'Body News 2',
+              date: 1541808000,
+              archived: true
+            };
+          },
+          id: '2'
+        }
+      }
+    },
+    {
+      payload: {
+        doc: {
+          data: () => {
+            return {
+              title: 'News 3',
+              body: 'Body News 3',
+              date: 1542672000,
+              archived: true
+            };
+          },
+          id: '3'
+        }
+      }
+    }
   ];
 
-  const data = from(news);
+  const data = of(news);
 
   const collectionStub = {
     snapshotChanges: jasmine.createSpy('snapshotChanges').and.returnValue(data)
@@ -38,6 +80,10 @@ describe('Router: App', () => {
 
   const newsServiceStub = {
     getNews: jasmine.createSpy('getNews').and.returnValue(of(news))
+  };
+
+  const archivesServiceStub = {
+    getArchives: jasmine.createSpy('getArchives').and.returnValue(of(news))
   };
 
   beforeEach(() => {
@@ -55,6 +101,7 @@ describe('Router: App', () => {
       ],
       providers: [
         { provide: NewsService, useValue: newsServiceStub },
+        { provide: ArchivesService, useValue: archivesServiceStub },
         { provide: AngularFirestore, useValue: angularFirestoreStub }
       ]
     });

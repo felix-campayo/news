@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from '../components/app/app.component';
@@ -14,6 +15,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     PrimeNgModule,
     AngularFireModule.initializeApp(CONFIG.firebaseConfig),
