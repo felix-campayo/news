@@ -4,7 +4,7 @@
     <ng-template pTemplate="caption">
         <div class="caption">
             <i class="fa fa-search"></i>
-            <input type="text" pInputText size="50" placeholder="Date Filter 'dd-mm-yyyy'" [formControl]="filterByDateFormControl">
+            <input type="text" pInputText size="50" placeholder="Date Filter 'dd-mm-yyyy hh:mm:ss'" [formControl]="filterByDateFormControl">
         </div>
     </ng-template>
     <ng-template pTemplate="header">
@@ -27,7 +27,7 @@
                 </a>
             </td>
             <td>{{item?.title}}</td>
-            <td>{{item?.date | date: 'dd-MM-yyyy'}}</td>
+            <td>{{item?.date | date: 'dd-MM-yyyy HH:mm:ss'}}</td>
             <td>
                 <p-button class="archive" styleClass="ui-button-warning" label="Archive" icon="fa fa-archive" (onClick)="archive(item)"></p-button>
             </td>
