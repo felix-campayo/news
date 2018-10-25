@@ -4,6 +4,9 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from '../components/app/app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PrimeNgModule } from './prime-ng.module';
+import { CONFIG } from '../config';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 @NgModule({
   declarations: [
@@ -12,7 +15,9 @@ import { PrimeNgModule } from './prime-ng.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    PrimeNgModule
+    PrimeNgModule,
+    AngularFireModule.initializeApp(CONFIG.firebaseConfig),
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
