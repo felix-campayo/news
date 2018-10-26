@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { News } from 'src/app/models';
 import { Subscription } from 'rxjs';
-import { Message } from 'primeng/components/common/api';
 import { ArchivesService } from '../../services';
 import { MessageUtil } from 'src/app/modules/shared/utils';
 
@@ -13,7 +12,6 @@ import { MessageUtil } from 'src/app/modules/shared/utils';
 })
 export class ArchivesListComponent implements OnInit, OnDestroy {
 
-    public msgs: Message[];
     public archives: News[];
     public readonly ROWS: number[] = [5, 10, 20];
     public filterByDateFormControl: FormControl;
@@ -27,7 +25,6 @@ export class ArchivesListComponent implements OnInit, OnDestroy {
     constructor(private archivesService: ArchivesService, private msgUtil: MessageUtil) {
         this.isLoading = true;
         this.subscriptions = [];
-        this.msgs = [];
         this.filterByDateFormControl = new FormControl('');
     }
 
