@@ -18,6 +18,7 @@ export class ArchivesListComponent implements OnInit, OnDestroy {
     public readonly ROWS: number[] = [5, 10, 20];
     public filterByDateFormControl: FormControl;
     public isLoading: boolean;
+    public readonly TOAST_KEY = 'toast';
     public readonly EMPTY_MESSAGE = 'No records found';
     private readonly SUCCESS_MESSAGE = 'News deleted';
     private readonly ERROR_MESSAGE = 'News was not deleted';
@@ -46,8 +47,8 @@ export class ArchivesListComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.subscriptions.push(
             this.archivesService.deleteArchives(item)
-                .subscribe(() => this.msgs = this.msgUtil.getSuccessMessage(this.SUCCESS_MESSAGE)
-                    , () => this.msgs = this.msgUtil.getErrorMessage(this.ERROR_MESSAGE)
+                .subscribe(() => this.msgUtil.addSuccessMessage(this.TOAST_KEY, this.SUCCESS_MESSAGE)
+                    , () => this.msgUtil.addErrorMessage(this.TOAST_KEY, this.ERROR_MESSAGE)
                     , () => this.isLoading = false)
         );
     }

@@ -1,4 +1,4 @@
-<p-messages [(value)]="msgs"></p-messages>
+<p-toast position="top-left" [key]="TOAST_KEY"></p-toast>
 <p-table #dt [value]="archives | filterByDate: filterByDateFormControl.value" [paginator]="true" [rows]="ROWS[0]"
     [rowsPerPageOptions]="ROWS" [loading]="isLoading" dataKey="title">
     <ng-template pTemplate="caption">
