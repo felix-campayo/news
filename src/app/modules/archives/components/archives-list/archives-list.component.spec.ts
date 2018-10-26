@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { PrimeNgModule } from 'src/app/modules/prime-ng.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/modules';
+import { MessageUtil } from 'src/app/modules/shared/utils';
 
 describe('ArchivesListComponent', () => {
     const archives: News[] = [
@@ -15,11 +16,13 @@ describe('ArchivesListComponent', () => {
         new News('3', 'News 3', 'Body News 3', new Date('October 11, 2018 15:00:00'), true)
     ];
 
-    let archivesServiceSpy: jasmine.SpyObj<ArchivesService>;
+    let archivesServiceStub: jasmine.SpyObj<ArchivesService>;
+    let messageUtilStub: jasmine.SpyObj<MessageUtil>;
     let component: ArchivesListComponent;
 
     beforeEach(async(() => {
-        const spy = jasmine.createSpyObj('ArchivesService', ['getArchives', 'deleteArchives']);
+        const archivesServiceSpy = jasmine.createSpyObj('ArchivesService', ['getArchives', 'deleteArchives']);
+        const messageUtilSpy = jasmine.createSpyObj('MessageUtil', ['addSuccessMessage', 'addErrorMessage']);
 
         TestBed.configureTestingModule({
             imports: [
@@ -32,39 +35,33 @@ describe('ArchivesListComponent', () => {
                 ArchivesListComponent
             ],
             providers: [
-                { provide: ArchivesService, useValue: spy }
+                { provide: ArchivesService, useValue: archivesServiceSpy },
+                { provide: MessageUtil, useValue: messageUtilSpy }
             ]
         }).compileComponents();
 
-        archivesServiceSpy = TestBed.get(ArchivesService);
+        archivesServiceStub = TestBed.get(ArchivesService);
+        messageUtilStub = TestBed.get(MessageUtil);
     }));
 
     it('should successfully delete one archives', () => {
-        archivesServiceSpy.deleteArchives.and.returnValue(of({}));
+        archivesServiceStub.deleteArchives.and.returnValue(of({}));
         const fixture = TestBed.createComponent(ArchivesListComponent);
         component = fixture.componentInstance;
         component.delete(archives[0]);
-        const auxMsgs = [{
-            severity: component.msgs[0].severity,
-            summary: component.msgs[0].summary
-        }];
-        expect(auxMsgs).toEqual([{ severity: 'success', summary: 'Success Message' }]);
+        expect(messageUtilStub.addSuccessMessage).toHaveBeenCalled();
     });
 
     it('should show error message when deleting', () => {
-        archivesServiceSpy.deleteArchives.and.returnValue(throwError({}));
+        archivesServiceStub.deleteArchives.and.returnValue(throwError({}));
         const fixture = TestBed.createComponent(ArchivesListComponent);
         component = fixture.componentInstance;
         component.delete(archives[0]);
-        const auxMsgs = [{
-            severity: component.msgs[0].severity,
-            summary: component.msgs[0].summary
-        }];
-        expect(auxMsgs).toEqual([{ severity: 'error', summary: 'Error Message' }]);
+        expect(messageUtilStub.addErrorMessage).toHaveBeenCalled();
     });
 
     it('should load all archives on start', () => {
-        archivesServiceSpy.getArchives.and.returnValue(of(archives));
+        archivesServiceStub.getArchives.and.returnValue(of(archives));
         const fixture = TestBed.createComponent(ArchivesListComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

@@ -22,7 +22,7 @@ export class ArchivesListComponent implements OnInit, OnDestroy {
     private readonly ERROR_MESSAGE = 'News was not deleted';
     private subscriptions: Subscription[];
 
-    constructor(private archivesService: ArchivesService, private msgUtil: MessageUtil) {
+    constructor(private msgUtil: MessageUtil, private archivesService: ArchivesService) {
         this.isLoading = true;
         this.subscriptions = [];
         this.filterByDateFormControl = new FormControl('');

@@ -22,7 +22,7 @@ export class NewsListComponent implements OnInit, OnDestroy {
     private readonly ERROR_MESSAGE = 'News was not archived';
     private subscriptions: Subscription[];
 
-    constructor(private newsService: NewsService, private msgUtil: MessageUtil) {
+    constructor(private msgUtil: MessageUtil, private newsService: NewsService) {
         this.isLoading = true;
         this.subscriptions = [];
         this.filterByDateFormControl = new FormControl('');
@@ -42,12 +42,6 @@ export class NewsListComponent implements OnInit, OnDestroy {
 
     public archive(item: News): void {
         this.isLoading = true;
-        // this.subscriptions.push(
-        //     this.newsService.archiveNews(item)
-        //         .subscribe(() => this.msgs = this.msgUtil.getSuccessMessage(this.SUCCESS_MESSAGE)
-        //             , () => this.msgs = this.msgUtil.getErrorMessage(this.ERROR_MESSAGE)
-        //             , () => this.isLoading = false)
-        // );
         this.subscriptions.push(
             this.newsService.archiveNews(item)
                 .subscribe(() => this.msgUtil.addSuccessMessage(this.TOAST_KEY, this.SUCCESS_MESSAGE)
