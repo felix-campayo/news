@@ -3,8 +3,8 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ButtonModule } from 'primeng/button';
-import { MessagesModule } from 'primeng/messages';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
     exports: [
@@ -12,8 +12,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         InputTextModule,
         TabMenuModule,
         ButtonModule,
-        MessagesModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        ToastModule
     ]
 })
 export class PrimeNgModule { }

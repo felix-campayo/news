@@ -7,6 +7,7 @@ import { of, throwError } from 'rxjs';
 import { PrimeNgModule } from 'src/app/modules/prime-ng.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/modules';
+import { MessageUtil } from 'src/app/modules/shared/utils';
 
 describe('NewsListComponent', () => {
     const news: News[] = [
@@ -15,11 +16,13 @@ describe('NewsListComponent', () => {
         new News('3', 'News 3', 'Body News 3', new Date('October 11, 2018 15:00:00'), false)
     ];
 
-    let newsServiceSpy: jasmine.SpyObj<NewsService>;
+    let newsServiceStub: jasmine.SpyObj<NewsService>;
+    let messageUtilStub: jasmine.SpyObj<MessageUtil>;
     let component: NewsListComponent;
 
     beforeEach(async(() => {
-        const spy = jasmine.createSpyObj('NewsService', ['getNews', 'archiveNews']);
+        const newsServiceSpy = jasmine.createSpyObj('NewsService', ['getNews', 'archiveNews']);
+        const messageUtilSpy = jasmine.createSpyObj('MessageUtil', ['addSuccessMessage', 'addErrorMessage']);
 
         TestBed.configureTestingModule({
             imports: [
@@ -32,39 +35,33 @@ describe('NewsListComponent', () => {
                 NewsListComponent
             ],
             providers: [
-                { provide: NewsService, useValue: spy }
+                { provide: NewsService, useValue: newsServiceSpy },
+                { provide: MessageUtil, useValue: messageUtilSpy }
             ]
         }).compileComponents();
 
-        newsServiceSpy = TestBed.get(NewsService);
+        newsServiceStub = TestBed.get(NewsService);
+        messageUtilStub = TestBed.get(MessageUtil);
     }));
 
     it('should successfully archive one news', () => {
-        newsServiceSpy.archiveNews.and.returnValue(of({}));
+        newsServiceStub.archiveNews.and.returnValue(of({}));
         const fixture = TestBed.createComponent(NewsListComponent);
         component = fixture.componentInstance;
         component.archive(news[0]);
-        const auxMsgs = [{
-            severity: component.msgs[0].severity,
-            summary: component.msgs[0].summary
-        }];
-        expect(auxMsgs).toEqual([{ severity: 'success', summary: 'Success Message' }]);
+        expect(messageUtilStub.addSuccessMessage).toHaveBeenCalled();
     });
 
     it('should show error message when archiving', () => {
-        newsServiceSpy.archiveNews.and.returnValue(throwError({}));
+        newsServiceStub.archiveNews.and.returnValue(throwError({}));
         const fixture = TestBed.createComponent(NewsListComponent);
         component = fixture.componentInstance;
         component.archive(news[0]);
-        const auxMsgs = [{
-            severity: component.msgs[0].severity,
-            summary: component.msgs[0].summary
-        }];
-        expect(auxMsgs).toEqual([{ severity: 'error', summary: 'Error Message' }]);
+        expect(messageUtilStub.addErrorMessage).toHaveBeenCalled();
     });
 
     it('should load all news on start', () => {
-        newsServiceSpy.getNews.and.returnValue(of(news));
+        newsServiceStub.getNews.and.returnValue(of(news));
         const fixture = TestBed.createComponent(NewsListComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();

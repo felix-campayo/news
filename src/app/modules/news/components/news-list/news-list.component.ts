@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { News } from 'src/app/models';
 import { NewsService } from '../../services/news.service';
 import { Subscription } from 'rxjs';
-import { Message } from 'primeng/components/common/api';
 import { MessageUtil } from 'src/app/modules/shared/utils';
 
 @Component({
@@ -13,20 +12,19 @@ import { MessageUtil } from 'src/app/modules/shared/utils';
 })
 export class NewsListComponent implements OnInit, OnDestroy {
 
-    public msgs: Message[];
     public news: News[];
     public readonly ROWS: number[] = [5, 10, 20];
     public filterByDateFormControl: FormControl;
     public isLoading: boolean;
+    public readonly TOAST_KEY = 'toast';
     public readonly EMPTY_MESSAGE = 'No records found';
     private readonly SUCCESS_MESSAGE = 'News archived';
     private readonly ERROR_MESSAGE = 'News was not archived';
     private subscriptions: Subscription[];
 
-    constructor(private newsService: NewsService, private msgUtil: MessageUtil) {
+    constructor(private msgUtil: MessageUtil, private newsService: NewsService) {
         this.isLoading = true;
         this.subscriptions = [];
-        this.msgs = [];
         this.filterByDateFormControl = new FormControl('');
     }
 
@@ -46,8 +44,8 @@ export class NewsListComponent implements OnInit, OnDestroy {
         this.isLoading = true;
         this.subscriptions.push(
             this.newsService.archiveNews(item)
-                .subscribe(() => this.msgs = this.msgUtil.getSuccessMessage(this.SUCCESS_MESSAGE)
-                    , () => this.msgs = this.msgUtil.getErrorMessage(this.ERROR_MESSAGE)
+                .subscribe(() => this.msgUtil.addSuccessMessage(this.TOAST_KEY, this.SUCCESS_MESSAGE)
+                    , () => this.msgUtil.addErrorMessage(this.TOAST_KEY, this.ERROR_MESSAGE)
                     , () => this.isLoading = false)
         );
     }
