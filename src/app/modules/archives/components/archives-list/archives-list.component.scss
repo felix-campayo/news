@@ -1,3 +1,5 @@
+@import 'src/assets/_variables';
+
 .header-action {
     width: 7.5rem;
 }
@@ -40,5 +42,16 @@
 
     input {
         width: auto;
+    }
+}
+
+@media only screen and (max-width: $tablet-max-width) {
+    .caption {
+        display: flex;
+        flex: 1;
+    
+        input {
+            width: 100%;
+        }
     }
 }
